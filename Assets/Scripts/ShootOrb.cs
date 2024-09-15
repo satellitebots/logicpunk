@@ -52,7 +52,6 @@ public class ShootOrb : MonoBehaviour
             projectileOrb.SetActive(true);
             rb = projectileOrb.GetComponent<Rigidbody>();
             rb.velocity = playerTransform.forward * orbSpeed;
-            Debug.Log(playerTransform.forward);
 
             cdTime = 0;
         }
@@ -62,7 +61,6 @@ public class ShootOrb : MonoBehaviour
         {
             if (getDistance(projectileOrb.transform.position, playerTransform.position) > maxDistance)
             {
-                Debug.Log("orb is destroyed");
                 Destroy(projectileOrb);
             }
         }
