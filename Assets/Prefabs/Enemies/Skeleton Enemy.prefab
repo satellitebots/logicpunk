@@ -69,7 +69,7 @@ PrefabInstance:
     - target: {fileID: 1838960246684498087, guid: 01a9ac21c19545841b89112f475662fa,
         type: 3}
       propertyPath: m_Name
-      value: Skeleton
+      value: Skeleton Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01a9ac21c19545841b89112f475662fa, type: 3}
@@ -116,3 +116,17 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6479067822368464563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907329540987790108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6a2762a38008e447b00e31ceca1bf2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthbar: {fileID: 0}
+  health: 50

@@ -19,6 +19,7 @@ public class SkeletonControl : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        player = GameObject.Find("Hero");
     }
 
     // Update is called once per frame
