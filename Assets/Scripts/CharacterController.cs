@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class CharacterController : MonoBehaviour
 {
     public float movementSpeed = 10f;
-    public float cameraSpeed = 100f;
+    public float cameraSpeed = 1000f;
     private Rigidbody rigidBody;
     private float movementX;
     private float movementY;
@@ -42,8 +42,13 @@ public class CharacterController : MonoBehaviour
     void OnLook(InputValue cameraValue)
     {
         Vector2 cameraVector = cameraValue.Get<Vector2>();
-        cameraShift = cameraVector.x;
+        cameraShift = Mathf.Clamp(cameraVector.x, -1, 1);
+    }
 
+    private void LateUpdate()
+    {
+        Quaternion newRotation = Quaternion.Euler(0, cameraShift * cameraSpeed, 0);
+        followCamera.transform.RotateAround(transform.position, Vector3.up, cameraShift * cameraSpeed );
     }
 
     private void Update()
@@ -56,9 +61,10 @@ public class CharacterController : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 playerMovement = new Vector3(movementX, 0.0f, movementY);
+        //Quaternion cameraDirection = followCamera.transform.rotation;
+        //Debug.Log(cameraDirection);
+        //playerMovement = playerMovement.;
         rigidBody.AddForce(playerMovement * movementSpeed);
-        Quaternion newRotation = Quaternion.Euler(45, cameraShift * cameraSpeed, 0);
-        followCamera.transform.SetPositionAndRotation(transform.position + new Vector3(0, 9, -10), Quaternion.Slerp(followCamera.transform.rotation, newRotation, Time.deltaTime));
     }
 
     //!!! The OnCollisionEnter and OnCollisionExit updates were copied from the 'BasicControlScript.cs' provided in the milestones !!!
