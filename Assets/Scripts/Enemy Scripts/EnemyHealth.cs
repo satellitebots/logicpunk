@@ -10,29 +10,33 @@ public class EnemyHealth : MonoBehaviour
     public float health = 50;
     private Slider slider;
     public Camera cam;
+    private float healthbarX;
+    private float healthbarY;
+    private float healthbarZ;
+    private float healthbarW;
+
+    private GameObject canvas;
+
+    public GameObject player;
     
 
     void Start()
     {
-        //healthbar = GameObject.Find("Canvas/EnemyHealthBar");
-        healthbar = Instantiate(healthbarOriginal, healthbarOriginal.transform);
-        healthbar.SetActive(true);
+        canvas = GameObject.Find("Canvas");
+        healthbarOriginal = GameObject.Find("Canvas/EnemyHealthBar");
+        healthbar = Instantiate(healthbarOriginal, canvas.transform);
+        healthbarOriginal.SetActive(false);
         slider = healthbar.GetComponent<Slider>();
         slider.maxValue = health;
         slider.value = health;
 
-        cam = Camera.main;
-        
-        
-
+        healthbar.transform.position = new Vector3(0f, 3f, 0f);        
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        //see https://www.youtube.com/watch?v=6U_OZkFtyxY for reference
-        //won't be able to get this working until camera work is finished
         healthbar.transform.position = transform.position + new Vector3(0f, 2f, 0f);
-        healthbar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+        healthbar.transform.LookAt(cam.transform.position, Vector3.up);
+
     }
 }
