@@ -10,6 +10,7 @@ public class SkeletonControl : MonoBehaviour
     NavMeshAgent agent;
     Animator anim;
     public GameObject player;
+    public Renderer rdr;
 
     private float distanceToPlayer;
     public float distanceToEngage = 20;
@@ -20,6 +21,7 @@ public class SkeletonControl : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         player = GameObject.Find("Hero");
+        rdr = gameObject.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -27,8 +29,14 @@ public class SkeletonControl : MonoBehaviour
     {
         distanceToPlayer = distanceEqn(transform.position, player.transform.position);
 
+        if (anim.GetBool("Death") == true)
+        {
+            agent.SetDestination(transform.position);
+            
+        }
+
         //player is too far away, do idle animations
-        if (distanceToPlayer > distanceToEngage)
+        else if (distanceToPlayer > distanceToEngage)
         {
             anim.SetBool("Pursue", false);
             anim.SetBool("Strike", false);
@@ -36,7 +44,7 @@ public class SkeletonControl : MonoBehaviour
         }
 
         //walks to the player, engages them
-        if (distanceToPlayer <= distanceToEngage && distanceToPlayer > distanceToAttack)
+        else if (distanceToPlayer <= distanceToEngage && distanceToPlayer > distanceToAttack)
         {
             anim.SetBool("Pursue", true);
             anim.SetBool("Strike", false);
@@ -44,12 +52,14 @@ public class SkeletonControl : MonoBehaviour
         }
 
         //stops moving, attacks the player
-        if (distanceToPlayer <= distanceToAttack)
+        else if (distanceToPlayer <= distanceToAttack)
         {
             anim.SetBool("Pursue", false);
             anim.SetBool("Strike", true);
             agent.SetDestination(transform.position);
         }
+
+
 
 
 

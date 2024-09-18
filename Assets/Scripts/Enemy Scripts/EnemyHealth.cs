@@ -5,27 +5,29 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public GameObject healthbarOriginal;
+    private GameObject healthbarOriginal;
     public GameObject healthbar;
     public float health = 50;
     private Slider slider;
-    public Camera cam;
-    private float healthbarX;
-    private float healthbarY;
-    private float healthbarZ;
-    private float healthbarW;
+    private GameObject cam;
 
     private GameObject canvas;
 
-    public GameObject player;
+    private GameObject player;
+
+    private Animator anim;
     
 
     void Start()
     {
         canvas = GameObject.Find("Canvas");
+        player = GameObject.Find("Hero");
         healthbarOriginal = GameObject.Find("Canvas/EnemyHealthBar");
         healthbar = Instantiate(healthbarOriginal, canvas.transform);
-        healthbarOriginal.SetActive(false);
+        cam = GameObject.Find("Hero/Main Camera");
+        anim = GetComponent<Animator>();
+
+        //healthbarOriginal.SetActive(false);
         slider = healthbar.GetComponent<Slider>();
         slider.maxValue = health;
         slider.value = health;
@@ -38,5 +40,29 @@ public class EnemyHealth : MonoBehaviour
         healthbar.transform.position = transform.position + new Vector3(0f, 2f, 0f);
         healthbar.transform.LookAt(cam.transform.position, Vector3.up);
 
+        //test code, remove when testing is complete
+        if (slider.value > 0)
+        {
+            TakeDamage(0.1f);
+        }
+
+        
+    }
+
+    void TakeDamage(float dmg)
+    {
+        //enemy takes damage.
+        slider.value += -dmg;
+
+        if (slider.value <= 0)
+        {
+            anim.SetBool("Death", true);
+            //Destroy(healthbar);
+        }
+
+        else
+        {
+            anim.SetBool("Damage", true);
+        }
     }
 }
