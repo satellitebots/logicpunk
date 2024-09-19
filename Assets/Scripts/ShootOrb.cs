@@ -56,10 +56,16 @@ public class ShootOrb : MonoBehaviour
             cdTime = 0;
         }
 
+
         //if orb is too far away, destroy it
+        checkForDestroyDistance(projectileOrb, playerTransform, maxDistance);
+    }
+
+    public void checkForDestroyDistance(GameObject projectileOrb, Transform playerTransform, float maxDistance)
+    {
         if (projectileOrb)
         {
-            if (getDistance(projectileOrb.transform.position, playerTransform.position) > maxDistance)
+            if (Vector3.Distance(projectileOrb.transform.position, playerTransform.position) > maxDistance)
             {
                 Destroy(projectileOrb);
             }
@@ -67,8 +73,9 @@ public class ShootOrb : MonoBehaviour
     }
 
     //distance formula
+    //THIS ISN'T WORKING. USE VECTOR3.DISTANCE(A,B) INSTEAD.
     public float getDistance(Vector3 v1, Vector3 v2)
     {
-        return (Mathf.Pow(Mathf.Pow(v2.z - v1.z, 2) + Mathf.Pow(v2.y - v1.y, 2) + Mathf.Pow(v2.x - v2.x, 2),0.5f));
+        return Mathf.Pow(Mathf.Pow(v2.z - v1.z, 2) + Mathf.Pow(v2.y - v1.y, 2) + Mathf.Pow(v2.x - v2.x, 2), 0.5f);
     }
 }

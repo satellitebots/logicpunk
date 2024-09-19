@@ -41,15 +41,15 @@ public class EnemyHealth : MonoBehaviour
         healthbar.transform.LookAt(cam.transform.position, Vector3.up);
 
         //test code, remove when testing is complete
-        if (slider.value > 0)
-        {
-            TakeDamage(0.1f);
-        }
+        //if (slider.value > 0)
+        //{
+            //TakeDamage(0.1f);
+        //}
 
         
     }
 
-    void TakeDamage(float dmg)
+    public void TakeDamage(float dmg)
     {
         //enemy takes damage.
         slider.value += -dmg;
@@ -57,7 +57,6 @@ public class EnemyHealth : MonoBehaviour
         if (slider.value <= 0)
         {
             anim.SetBool("Death", true);
-            //Destroy(healthbar);
         }
 
         else

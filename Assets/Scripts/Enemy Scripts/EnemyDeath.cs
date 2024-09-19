@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class EnemyDeath : MonoBehaviour
 {
-    private Renderer rdr;
-    private float alpha;
+    //private Renderer rdr;
+    //private float alpha;
     private Animator anim;
     private EnemyHealth enemyHealthScript;
+    private float timeToDeath = 3;
+    private float currTime = 0;
 
     void Start()
     {
-        rdr = GetComponent<Renderer>();
+        //rdr = GetComponent<Renderer>();
         anim = GetComponent<Animator>();
-        alpha = rdr.material.color.a;
+        //alpha = rdr.material.color.a;
         enemyHealthScript = GetComponent<EnemyHealth>();
+        
     }
 
     // Update is called once per frame
@@ -24,17 +27,19 @@ public class EnemyDeath : MonoBehaviour
         {
             //fade out character
 
-            if (rdr.material.color.a > 0)
-            {
-                alpha += -0.01f;
-                rdr.material.color = new Color(1f, 1f, 1f, alpha);
-            }
+            currTime += Time.deltaTime;
 
-            else
+            if (currTime > timeToDeath)
             {
                 Destroy(gameObject);
                 Destroy(enemyHealthScript.healthbar);
             }
+
+            //if (rdr.material.color.a > 0)
+            //{
+                //alpha += -0.01f;
+                //rdr.material.color = new Color(1f, 1f, 1f, alpha);
+            //}
         }
     }
 }

@@ -10,18 +10,16 @@ public class SkeletonControl : MonoBehaviour
     NavMeshAgent agent;
     Animator anim;
     public GameObject player;
-    public Renderer rdr;
 
     private float distanceToPlayer;
     public float distanceToEngage = 20;
-    public float distanceToAttack = 2;
+    public float distanceToAttack = 0f;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         player = GameObject.Find("Hero");
-        rdr = gameObject.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
