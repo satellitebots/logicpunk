@@ -5,34 +5,63 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public GameObject healthbarOriginal;
+    private GameObject healthbarOriginal;
     public GameObject healthbar;
     public float health = 50;
     private Slider slider;
-    public Camera cam;
+    private GameObject cam;
+
+    private GameObject canvas;
+
+    private GameObject player;
+
+    private Animator anim;
     
 
     void Start()
     {
-        //healthbar = GameObject.Find("Canvas/EnemyHealthBar");
-        healthbar = Instantiate(healthbarOriginal, healthbarOriginal.transform);
-        healthbar.SetActive(true);
+        canvas = GameObject.Find("Canvas");
+        player = GameObject.Find("Hero");
+        healthbarOriginal = GameObject.Find("Canvas/EnemyHealthBar");
+        healthbar = Instantiate(healthbarOriginal, canvas.transform);
+        cam = GameObject.Find("Hero/Main Camera");
+        anim = GetComponent<Animator>();
+
+        //healthbarOriginal.SetActive(false);
         slider = healthbar.GetComponent<Slider>();
         slider.maxValue = health;
         slider.value = health;
 
-        cam = Camera.main;
-        
-        
-
+        healthbar.transform.position = new Vector3(0f, 3f, 0f);        
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        //see https://www.youtube.com/watch?v=6U_OZkFtyxY for reference
-        //won't be able to get this working until camera work is finished
         healthbar.transform.position = transform.position + new Vector3(0f, 2f, 0f);
-        healthbar.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+        healthbar.transform.LookAt(cam.transform.position, Vector3.up);
+
+        //test code, remove when testing is complete
+        //if (slider.value > 0)
+        //{
+            //TakeDamage(0.1f);
+        //}
+
+        
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        //enemy takes damage.
+        slider.value += -dmg;
+
+        if (slider.value <= 0)
+        {
+            anim.SetBool("Death", true);
+        }
+
+        else
+        {
+            anim.SetBool("Damage", true);
+        }
     }
 }
