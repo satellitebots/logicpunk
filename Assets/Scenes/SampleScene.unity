@@ -966,7 +966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 10
-  cameraSpeed: 10
+  cameraSpeed: 20
   followCamera: {fileID: 330585543}
   JumpForce: 10
 --- !u!65 &1077806455
@@ -997,7 +997,7 @@ MonoBehaviour:
   cooldown: 3
   orb: {fileID: 846190442}
   playerTransform: {fileID: 1077806451}
-  maxDistance: 13
+  maxDistance: 20
   orbSpeed: 8
 --- !u!4 &1249897926 stripped
 Transform:
