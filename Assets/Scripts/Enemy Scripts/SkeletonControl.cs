@@ -13,24 +13,53 @@ public class SkeletonControl : MonoBehaviour
 
     private float distanceToPlayer;
     public float distanceToEngage = 20;
-    public float distanceToAttack = 0f;
+    public float distanceToAttack = 1f;
+    public float rotationOffset = 0f;
+    private Vector3 rayPosition;
+    private Vector3 destination;
+    private CharacterController charControlScript;
+    private float lastGroundedHeight;
+    private float theta;
+    private Quaternion rot;
+
+    private Ray ray;
+    private RaycastHit hit;
+    private bool raycast;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = true;
+
         anim = GetComponent<Animator>();
         player = GameObject.Find("Hero");
+
+        charControlScript = player.GetComponent<CharacterController>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        distanceToPlayer = distanceEqn(transform.position, player.transform.position);
+        agent.updateRotation = true;
+
+        //This code tries to account for the player jumping. AI should behave as if the player is still grounded.
+        if (charControlScript.IsGrounded)
+        {
+            lastGroundedHeight = player.transform.position.y;
+            destination = player.transform.position;
+        }
+
+        else if (!charControlScript.IsGrounded)
+        {
+            destination = new Vector3(player.transform.position.x, lastGroundedHeight, player.transform.position.z);
+        }
+
+        distanceToPlayer = Vector3.Distance(transform.position, destination);
 
         if (anim.GetBool("Death") == true)
         {
             agent.SetDestination(transform.position);
-            
         }
 
         //player is too far away, do idle animations
@@ -46,7 +75,7 @@ public class SkeletonControl : MonoBehaviour
         {
             anim.SetBool("Pursue", true);
             anim.SetBool("Strike", false);
-            agent.SetDestination(player.transform.position);
+            agent.SetDestination(destination);
         }
 
         //stops moving, attacks the player
@@ -55,28 +84,20 @@ public class SkeletonControl : MonoBehaviour
             anim.SetBool("Pursue", false);
             anim.SetBool("Strike", true);
             agent.SetDestination(transform.position);
+
+            rayPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+            ray = new Ray(rayPosition, transform.forward);
+            //Debug.DrawRay(rayPosition, transform.forward);
+
+            raycast = Physics.Raycast(ray, out hit, 3f);
+
+            //Debug.Log(transform.forward);
+
+            if (!raycast)
+            {
+                rot = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime);
+            }
         }
-
-
-
-
-
-        
-
-        
-
-        //default state is idle
-
-        //switch state when player within 20ft and pursue
-
-        //switch state to attack when reaching destination
-
-        //after skeleton takes damage, check for 0 hp and perform death animation
-
-    }
-
-    private float distanceEqn(Vector3 v1, Vector3 v2)
-    {
-        return Mathf.Sqrt(Mathf.Pow(v2.x - v1.x, 2) + Mathf.Pow(v2.y - v1.y, 2) + Mathf.Pow(v2.z - v1.z, 2));
     }
 }
