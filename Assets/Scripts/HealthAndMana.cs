@@ -8,12 +8,18 @@ public class HealthAndMana : MonoBehaviour
 
     public GameObject healthbar;
     public GameObject manawheel;
+    public GameObject damagedObject;
     private Slider hpSlider;
     private Slider manaSlider;
+    private Slider damagedSlider;
     public float maxHP = 100;
     public float currHP = 100;
     private int maxMana = 6;
     public int currMana = 6;
+
+    private bool losingHP = false;
+    private float losingHPtimer = 0;
+    private float losingHPCD = 0.4f;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +32,9 @@ public class HealthAndMana : MonoBehaviour
         manaSlider.maxValue = 1;
         manaSlider.value = 1;
 
+        damagedSlider = damagedObject.GetComponent<Slider>();
+        damagedSlider.maxValue = maxHP;
+        damagedSlider.value = maxHP;
         MapToUIManaWheel();
 
     }
@@ -33,11 +42,30 @@ public class HealthAndMana : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        if (damagedSlider.value < hpSlider.value)
+        {
+            losingHP = false;
+            damagedSlider.value = hpSlider.value;
+            losingHPtimer = 0;
+        }
+
+        if (losingHP)
+        {
+            losingHPtimer += Time.deltaTime;
+
+            if (losingHPtimer > losingHPCD)
+            {
+                damagedSlider.value += -15f * Time.deltaTime;
+            }
+        }
     }
 
     public void LoseHealth(float dmg)
     {
+
+        losingHP = true;
+
         currHP += -dmg;
         if (currHP > 0)
         {
@@ -133,5 +161,7 @@ public class HealthAndMana : MonoBehaviour
             manaSlider.value = 1.0f;
         }
     }
+
+    private int[] manaAmounts = new int[4] { 0, 1, 2, 3 };
 
 }

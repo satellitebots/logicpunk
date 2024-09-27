@@ -36,11 +36,11 @@ public class HandHurtBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider c)
     {
-        Debug.Log(c);
+        //Debug.Log(c);
 
         if (anim.GetBool("Swinging") == true && c.tag == "Player")
         {
-            Debug.Log("collision");
+            //Debug.Log("collision");
             HPandMPScript.LoseHealth(damage);
             hp = HPandMPScript.currHP;
         }      
