@@ -11,6 +11,7 @@ public class ShootOrb : MonoBehaviour
     private Rigidbody rb;
     public Transform playerTransform;
     private Vector3 initialPlayerDistance;
+    private HealthAndMana HPandManaScript;
 
     //orb is destroyed after it has travelled maxDistance away from its spawn point
     public float maxDistance = 10f;
@@ -29,6 +30,7 @@ public class ShootOrb : MonoBehaviour
         //rb = GetComponent<Rigidbody>();
         playerTransform = GetComponent<Transform>();
         initialPlayerDistance = playerTransform.position;
+        HPandManaScript = GetComponent<HealthAndMana>();
     }
 
     // Update is called once per frame
@@ -44,16 +46,17 @@ public class ShootOrb : MonoBehaviour
         }
 
         //send out orb if one doesn't exist and it isn't on cooldown
-        if (Input.GetButtonDown("Fire1") && cdTime > cooldown && !projectileOrb)
+        if (Input.GetButtonDown("Fire1") && cdTime > cooldown && !projectileOrb && HPandManaScript.currMana > 0)
         {
+            HPandManaScript.LoseMana();
             spawnpoint = playerTransform.position + offset;
             initialPlayerDistance = playerTransform.position;
             projectileOrb = Instantiate(orb, spawnpoint, orb.transform.rotation);
             projectileOrb.SetActive(true);
             rb = projectileOrb.GetComponent<Rigidbody>();
             rb.velocity = playerTransform.forward * orbSpeed;
-
             cdTime = 0;
+
         }
 
 
