@@ -5,6 +5,8 @@ using UnityEngine;
 public class HandHurtBox : MonoBehaviour
 {
 
+    public AudioManager audioManagerScript;
+
     public GameObject player;
     public Transform rootTransform;
     public GameObject skeleton;
@@ -14,6 +16,12 @@ public class HandHurtBox : MonoBehaviour
     public float hp;
     public Animator anim;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        audioManagerScript = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     void Start()
     {
         rootTransform = transform.root;
@@ -36,11 +44,10 @@ public class HandHurtBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider c)
     {
-        //Debug.Log(c);
 
         if (anim.GetBool("Swinging") == true && c.tag == "Player")
         {
-            //Debug.Log("collision");
+            audioManagerScript.PlaySFX(audioManagerScript.skeletonAttack, 1f);
             HPandMPScript.LoseHealth(damage);
             hp = HPandMPScript.currHP;
         }      
