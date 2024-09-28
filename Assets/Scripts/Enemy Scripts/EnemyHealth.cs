@@ -13,7 +13,7 @@ public class EnemyHealth : MonoBehaviour
 
     private GameObject canvas;
 
-    private GameObject player;
+    public GameObject player;
 
     private Animator anim;
     
@@ -27,7 +27,6 @@ public class EnemyHealth : MonoBehaviour
         cam = GameObject.Find("Hero/Main Camera");
         anim = GetComponent<Animator>();
 
-        //healthbarOriginal.SetActive(false);
         slider = healthbar.GetComponent<Slider>();
         slider.maxValue = health;
         slider.value = health;
@@ -39,14 +38,6 @@ public class EnemyHealth : MonoBehaviour
     {
         healthbar.transform.position = transform.position + new Vector3(0f, 2f, 0f);
         healthbar.transform.LookAt(cam.transform.position, Vector3.up);
-
-        //test code, remove when testing is complete
-        //if (slider.value > 0)
-        //{
-            //TakeDamage(0.1f);
-        //}
-
-        
     }
 
     public void TakeDamage(float dmg)
@@ -59,9 +50,8 @@ public class EnemyHealth : MonoBehaviour
             anim.SetBool("Death", true);
         }
 
-        else
-        {
-            anim.SetBool("Damage", true);
-        }
+        anim.SetBool("Damage", true);
+        Debug.Log("Damage set to true");
+        
     }
 }
