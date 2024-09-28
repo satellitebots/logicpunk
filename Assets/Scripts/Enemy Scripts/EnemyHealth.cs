@@ -50,9 +50,8 @@ public class EnemyHealth : MonoBehaviour
             anim.SetBool("Death", true);
         }
 
-        else
-        {
-            anim.SetBool("Damage", true);
-        }
+        anim.SetBool("Damage", true);
+        Debug.Log("Damage set to true");
+        
     }
 }

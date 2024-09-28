@@ -1932,7 +1932,7 @@ MonoBehaviour:
   damagedObject: {fileID: 489217155}
   maxHP: 100
   currHP: 100
-  currMana: 1
+  currMana: 6
 --- !u!1 &1097303360
 GameObject:
   m_ObjectHideFlags: 0
